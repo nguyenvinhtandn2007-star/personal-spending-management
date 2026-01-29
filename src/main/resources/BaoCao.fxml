@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BaoCaoController">
+    <top>
+        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: lightgray; -fx-padding: 10;">
+            <Label text="BÁO CÁO THU CHI">
+                <font>
+                    <Font name="System" size="18.0" />
+                </font>
+            </Label>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true">
+            <content>
+                <VBox spacing="10" style="-fx-padding: 10;">
+                    <VBox style="-fx-background-color: green; -fx-padding: 15;">
+                        <Label text="TỔNG THU" textFill="WHITE">
+                            <font><Font name="System" size="14.0" /></font>
+                        </Label>
+                        <Label fx:id="lbThu" text="0 đ" textFill="WHITE">
+                            <font><Font name="System" size="20.0" /></font>
+                        </Label>
+                    </VBox>
+                    <VBox style="-fx-background-color: red; -fx-padding: 15;">
+                        <Label text="TỔNG CHI" textFill="WHITE">
+                            <font><Font name="System" size="14.0" /></font>
+                        </Label>
+                        <Label fx:id="lbChi" text="0 đ" textFill="WHITE">
+                            <font><Font name="System" size="20.0" /></font>
+                        </Label>
+                    </VBox>
+                    <VBox style="-fx-background-color: blue; -fx-padding: 15;">
+                        <Label text="SỐ DƯ" textFill="WHITE">
+                            <font><Font name="System" size="14.0" /></font>
+                        </Label>
+                        <Label fx:id="lbDu" text="0 đ" textFill="WHITE">
+                            <font><Font name="System" size="20.0" /></font>
+                        </Label>
+                    </VBox>
+                    <Label text="Chi tiết:">
+                        <font><Font name="System" size="14.0" /></font>
+                    </Label>
+                    <VBox fx:id="vbList" spacing="5" />
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER" spacing="50" style="-fx-padding: 10; -fx-border-color: gray; -fx-border-width: 1 0 0 0;">
+            <VBox fx:id="nutLichSu" alignment="CENTER">
+                <Label text="Lịch sử" />
+            </VBox>
+            <VBox fx:id="nutBaoCao" alignment="CENTER">
+                <Label text="Báo cáo" style="-fx-font-weight: bold; -fx-text-fill: blue;" />
+            </VBox>
+        </HBox>
+    </bottom>
+</BorderPane>
