@@ -1,6 +1,8 @@
 package model;
 
-public class BaoCaoNgay {
+import java.io.Serializable;
+
+public class BaoCaoNgay implements Serializable {
 
     private String ngay;
     private long tongThu;

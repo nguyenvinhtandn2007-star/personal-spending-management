@@ -12,7 +12,7 @@ public class Main extends Application {
         Scene scene = new Scene(
                 FXMLLoader.load(getClass().getResource("/DangNhap.fxml"))
         );
-        stage.setTitle("Quản lý chi tiêu cá nhân");
+        stage.setTitle("Quan ly chi tieu gia dinh");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -22,4 +22,3 @@ public class Main extends Application {
         launch();
     }
 }
-

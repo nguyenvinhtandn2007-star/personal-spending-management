@@ -10,7 +10,7 @@
 
 <VBox alignment="CENTER" prefHeight="600.0" prefWidth="350.0" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DangNhapController">
     <children>
-        <Label text="SỔ THU CHI" textFill="blue">
+        <Label text="SO THU CHI GIA DINH" textFill="blue">
             <font>
                 <Font name="System" size="24.0" />
             </font>
@@ -20,16 +20,17 @@
                 <Insets left="30.0" right="30.0" />
             </padding>
             <children>
-                <Label text="Tên đăng nhập:" />
+                <Label text="Ten dang nhap:" />
                 <TextField fx:id="txtTenDangNhap" />
-                <Label text="Mật khẩu:" />
+                <Label text="Mat khau:" />
                 <PasswordField fx:id="txtMatKhau" />
-                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#xuLyDangNhap" style="-fx-background-color: blue; -fx-text-fill: white;" text="Đăng Nhập">
+                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#xuLyDangNhap" style="-fx-background-color: blue; -fx-text-fill: white;" text="Dang nhap">
                     <font>
                         <Font name="System" size="14.0" />
                     </font>
                 </Button>
-                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#moDangKy" text="Đăng Ký Tài Khoản" />
+                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#moDangKy" text="Dang ky tai khoan" />
+                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#moQuenMatKhau" text="Quen mat khau" />
             </children>
         </VBox>
     </children>

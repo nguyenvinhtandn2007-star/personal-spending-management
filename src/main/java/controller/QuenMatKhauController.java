@@ -10,44 +10,46 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.TaiKhoan;
 
-public class DangKyController {
-
+public class QuenMatKhauController {
     @FXML private TextField txtTenDangNhap;
     @FXML private TextField txtHoTen;
-    @FXML private PasswordField txtMatKhau;
+    @FXML private PasswordField txtMatKhauMoi;
+    @FXML private PasswordField txtNhapLaiMatKhau;
 
     private final ClientService clientService = ClientService.getInstance();
 
     @FXML
-    public void xuLyDangKy() {
-        String user = txtTenDangNhap.getText().trim();
-        String pass = txtMatKhau.getText();
-        String ten = txtHoTen.getText().trim();
+    public void xuLyDatLaiMatKhau() {
+        String username = txtTenDangNhap.getText().trim();
+        String fullName = txtHoTen.getText().trim();
+        String newPassword = txtMatKhauMoi.getText();
+        String confirmPassword = txtNhapLaiMatKhau.getText();
 
-        if (user.isEmpty() || pass.isEmpty() || ten.isEmpty()) {
-            thongBao(Alert.AlertType.WARNING, "Vui lòng nhập đầy đủ thông tin.");
+        if (username.isEmpty() || fullName.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+            thongBao(Alert.AlertType.WARNING, "Vui long nhap day du thong tin.");
             return;
         }
-
-        TaiKhoan tk = new TaiKhoan();
-        tk.setTenDangNhap(user);
-        tk.setMatKhau(pass);
-        tk.setHoTen(ten);
-        tk.setVaiTro("USER");
+        if (!newPassword.equals(confirmPassword)) {
+            thongBao(Alert.AlertType.WARNING, "Mat khau nhap lai khong khop.");
+            return;
+        }
+        if (newPassword.length() < 6) {
+            thongBao(Alert.AlertType.WARNING, "Mat khau moi phai co it nhat 6 ky tu.");
+            return;
+        }
 
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() {
-                // Client gửi thông tin đăng ký lên server, server tự hash password.
-                clientService.register(tk);
+                // Server kiem tra username + ho ten, sau do hash mat khau moi.
+                clientService.resetPassword(username, fullName, newPassword);
                 return null;
             }
         };
 
         task.setOnSucceeded(e -> {
-            thongBao(Alert.AlertType.INFORMATION, "Đăng ký thành công.");
+            thongBao(Alert.AlertType.INFORMATION, "Dat lai mat khau thanh cong. Hay dang nhap bang mat khau moi.");
             quayLaiDangNhap();
         });
         task.setOnFailed(e -> thongBao(Alert.AlertType.ERROR, task.getException().getMessage()));
@@ -57,9 +59,7 @@ public class DangKyController {
     @FXML
     public void quayLaiDangNhap() {
         try {
-            Scene sc = txtTenDangNhap.getScene();
-            Stage stage = (Stage) sc.getWindow();
-
+            Stage stage = (Stage) txtTenDangNhap.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/DangNhap.fxml"));
             stage.setScene(new Scene(root));
         } catch (Exception e) {

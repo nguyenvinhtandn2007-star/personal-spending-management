@@ -1,12 +1,14 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class TaiKhoan {
+public class TaiKhoan implements Serializable {
     private int idTaiKhoan;
     private String tenDangNhap;
     private String matKhau;
     private String hoTen;
+    private String vaiTro;
     private LocalDateTime ngayTao;
 
     public TaiKhoan() {}
@@ -48,6 +50,14 @@ public class TaiKhoan {
 
     public void setHoTen(String hoTen) {
         this.hoTen = hoTen;
+    }
+
+    public String getVaiTro() {
+        return vaiTro;
+    }
+
+    public void setVaiTro(String vaiTro) {
+        this.vaiTro = vaiTro;
     }
 
     public LocalDateTime getNgayTao() {

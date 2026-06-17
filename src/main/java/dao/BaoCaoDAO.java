@@ -50,6 +50,32 @@ public class BaoCaoDAO {
         return list;
     }
 
+    public List<BaoCaoNgay> getBaoCaoGiaDinhTheoNgay() {
+        List<BaoCaoNgay> list = new ArrayList<>();
+        String sql = "SELECT CAST(thoi_gian AS DATE) AS ngay, "
+                + "SUM(CASE WHEN id_loai = 2 THEN so_tien ELSE 0 END) AS tong_thu, "
+                + "SUM(CASE WHEN id_loai = 1 THEN so_tien ELSE 0 END) AS tong_chi "
+                + "FROM GIAO_DICH "
+                + "GROUP BY CAST(thoi_gian AS DATE) "
+                + "ORDER BY ngay DESC";
+
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                String ngay = rs.getDate("ngay").toString();
+                long thu = rs.getLong("tong_thu");
+                long chi = rs.getLong("tong_chi");
+                list.add(new BaoCaoNgay(ngay, thu, chi));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     public long tinhTongThu(List<BaoCaoNgay> list) {
         long tong = 0;
         for (int i = 0; i < list.size(); i++) {

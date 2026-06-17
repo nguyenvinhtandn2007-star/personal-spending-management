@@ -1,6 +1,8 @@
 package model;
 
-public class DanhMuc {
+import java.io.Serializable;
+
+public class DanhMuc implements Serializable {
     private int idDanhMuc;
     private String tenDanhMuc;
 

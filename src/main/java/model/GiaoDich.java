@@ -1,9 +1,16 @@
 package model;
 
-import javafx.beans.property.*;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class GiaoDich {
+public class GiaoDich implements Serializable {
 
     private int idTaiKhoan;
     private DanhMuc danhMuc;
@@ -13,27 +20,45 @@ public class GiaoDich {
     private LocalDateTime thoiGian;
     private int idGiaoDich;
 
-    private StringProperty ngay = new SimpleStringProperty();
-    private StringProperty tenDanhMuc = new SimpleStringProperty();
-    private StringProperty tenLoai = new SimpleStringProperty();
-    private StringProperty ghiChuProperty = new SimpleStringProperty();
-    private LongProperty soTienProperty = new SimpleLongProperty();
+    private String tenDanhMuc;
+    private String tenLoai;
+    private String tenDangNhap;
+    private String hoTenTaiKhoan;
 
-    public GiaoDich() {}
+    // Các JavaFX Property chỉ phục vụ hiển thị bảng ở client, không gửi qua socket.
+    private transient StringProperty ngayProperty;
+    private transient StringProperty tenDanhMucProperty;
+    private transient StringProperty tenLoaiProperty;
+    private transient StringProperty ghiChuProperty;
+    private transient LongProperty soTienProperty;
 
-    public GiaoDich(int idTaiKhoan, DanhMuc danhMuc,LoaiGiaoDich loai, long soTien, String ghiChu, LocalDateTime thoiGian) {
+    public GiaoDich() {
+        initProperties();
+    }
+
+    public GiaoDich(int idTaiKhoan, DanhMuc danhMuc, LoaiGiaoDich loai, long soTien, String ghiChu, LocalDateTime thoiGian) {
         this.idTaiKhoan = idTaiKhoan;
         this.danhMuc = danhMuc;
         this.loai = loai;
         this.soTien = soTien;
         this.ghiChu = ghiChu;
         this.thoiGian = thoiGian;
+        this.tenDanhMuc = danhMuc == null ? null : danhMuc.getTenDanhMuc();
+        this.tenLoai = loai == null ? null : loai.getTenLoai();
+        initProperties();
+    }
 
-        this.soTienProperty.set(soTien);
-        this.ghiChuProperty.set(ghiChu);
-        if (thoiGian != null) {
-            this.ngay.set(thoiGian.toLocalDate().toString());
-        }
+    private void initProperties() {
+        ngayProperty = new SimpleStringProperty(thoiGian == null ? "" : thoiGian.toLocalDate().toString());
+        tenDanhMucProperty = new SimpleStringProperty(tenDanhMuc == null ? "" : tenDanhMuc);
+        tenLoaiProperty = new SimpleStringProperty(tenLoai == null ? "" : tenLoai);
+        ghiChuProperty = new SimpleStringProperty(ghiChu == null ? "" : ghiChu);
+        soTienProperty = new SimpleLongProperty(soTien);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        initProperties();
     }
 
     public int getIdTaiKhoan() {
@@ -50,6 +75,8 @@ public class GiaoDich {
 
     public void setDanhMuc(DanhMuc danhMuc) {
         this.danhMuc = danhMuc;
+        this.tenDanhMuc = danhMuc == null ? null : danhMuc.getTenDanhMuc();
+        initProperties();
     }
 
     public LoaiGiaoDich getLoai() {
@@ -58,6 +85,8 @@ public class GiaoDich {
 
     public void setLoai(LoaiGiaoDich loai) {
         this.loai = loai;
+        this.tenLoai = loai == null ? null : loai.getTenLoai();
+        initProperties();
     }
 
     public long getSoTien() {
@@ -66,7 +95,7 @@ public class GiaoDich {
 
     public void setSoTien(long soTien) {
         this.soTien = soTien;
-        this.soTienProperty.set(soTien);
+        initProperties();
     }
 
     public String getGhiChu() {
@@ -75,7 +104,7 @@ public class GiaoDich {
 
     public void setGhiChu(String ghiChu) {
         this.ghiChu = ghiChu;
-        this.ghiChuProperty.set(ghiChu);
+        initProperties();
     }
 
     public LocalDateTime getThoiGian() {
@@ -84,51 +113,65 @@ public class GiaoDich {
 
     public void setThoiGian(LocalDateTime thoiGian) {
         this.thoiGian = thoiGian;
-        if (thoiGian != null) {
-            this.ngay.set(thoiGian.toLocalDate().toString());
-        }
+        initProperties();
     }
 
-    public String getNgay() {
-        return ngay.get();
-    }
-
-    public void setNgay(String ngay) {
-        this.ngay.set(ngay);
-    }
-
-    public String getTenDanhMuc() {
-        return tenDanhMuc.get();
-    }
-
-    public void setTenDanhMuc(String tenDanhMuc) {
-        this.tenDanhMuc.set(tenDanhMuc);
-    }
-
-    public String getTenLoai() {
-        return tenLoai.get();
-    }
-
-    public void setTenLoai(String tenLoai) {
-        this.tenLoai.set(tenLoai);
-    }
     public int getIdGiaoDich() {
         return idGiaoDich;
     }
+
     public void setIdGiaoDich(int idGiaoDich) {
         this.idGiaoDich = idGiaoDich;
     }
 
-    public StringProperty ngayProperty() {
-        return ngay;
+    public String getNgay() {
+        return ngayProperty.get();
     }
 
-    public StringProperty tenDanhMucProperty() {
+    public String getTenDanhMuc() {
         return tenDanhMuc;
     }
 
-    public StringProperty tenLoaiProperty() {
+    public void setTenDanhMuc(String tenDanhMuc) {
+        this.tenDanhMuc = tenDanhMuc;
+        initProperties();
+    }
+
+    public String getTenLoai() {
         return tenLoai;
+    }
+
+    public void setTenLoai(String tenLoai) {
+        this.tenLoai = tenLoai;
+        initProperties();
+    }
+
+    public String getTenDangNhap() {
+        return tenDangNhap;
+    }
+
+    public void setTenDangNhap(String tenDangNhap) {
+        this.tenDangNhap = tenDangNhap;
+    }
+
+    public String getHoTenTaiKhoan() {
+        return hoTenTaiKhoan;
+    }
+
+    public void setHoTenTaiKhoan(String hoTenTaiKhoan) {
+        this.hoTenTaiKhoan = hoTenTaiKhoan;
+    }
+
+    public StringProperty ngayProperty() {
+        return ngayProperty;
+    }
+
+    public StringProperty tenDanhMucProperty() {
+        return tenDanhMucProperty;
+    }
+
+    public StringProperty tenLoaiProperty() {
+        return tenLoaiProperty;
     }
 
     public LongProperty soTienProperty() {

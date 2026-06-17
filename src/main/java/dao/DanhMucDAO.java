@@ -37,4 +37,44 @@ public class DanhMucDAO {
         }
         return list;
     }
+
+    public boolean them(DanhMuc danhMuc) {
+        String sql = "INSERT INTO DANH_MUC (TEN_DANH_MUC) VALUES (?)";
+
+        try (Connection con = DBConnect.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, danhMuc.getTenDanhMuc());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean capNhat(DanhMuc danhMuc) {
+        String sql = "UPDATE DANH_MUC SET TEN_DANH_MUC=? WHERE ID_DANH_MUC=?";
+
+        try (Connection con = DBConnect.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, danhMuc.getTenDanhMuc());
+            ps.setInt(2, danhMuc.getIdDanhMuc());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean xoa(int idDanhMuc) {
+        String sql = "DELETE FROM DANH_MUC WHERE ID_DANH_MUC=?";
+
+        try (Connection con = DBConnect.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idDanhMuc);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
